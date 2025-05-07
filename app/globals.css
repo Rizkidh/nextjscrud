@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111827; /* Tailwind bg-gray-900 */
     --foreground: #ededed;
   }
 }

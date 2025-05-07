@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // pastikan ini diimpor juga
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,12 +21,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full bg-gray-900">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col bg-gray-900`}
+      >
         <ToastContainer />
-        <Navbar />  
-        {children}
+        {/* Navbar yang fixed */}
+        <Navbar className="fixed top-0 left-0 right-0 z-50 bg-gray-800" />
+        {/* Konten utama dengan padding atas */}
+        <main className="flex-1 overflow-hidden pt-16 pb-[80px]">
+          {/* Konten di sini */}
+          {children}
+        </main>
       </body>
     </html>
   );

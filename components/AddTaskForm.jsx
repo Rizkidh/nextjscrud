@@ -43,7 +43,8 @@ const AddTaskForm = () => {
   };
 
   return (
-    <div className="container m-4 p-4">
+    <main className="min-h-screen bg-gray-900 text-white p-4">
+    <div className="flex flex-col h-screen max-w-4xl mx-auto">
       <h1 className="text-3xl text-center">Add Task</h1>
       <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         {/* Task Name Field */}
@@ -130,6 +131,7 @@ const AddTaskForm = () => {
         </button>
       </form>
     </div>
+    </main>
   );
 };
 

@@ -1,7 +1,7 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import DeleteTask from './DeleteTask';
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import DeleteTask from "./DeleteTask";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]); // State to store tasks
@@ -12,12 +12,12 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/tasks'); // Adjust the URL if needed
+        const res = await fetch("http://localhost:3000/api/tasks"); // Adjust the URL if needed
         if (res.ok) {
           const data = await res.json();
           setTasks(data); // Set the fetched tasks to state
         } else {
-          throw new Error('Failed to fetch tasks');
+          throw new Error("Failed to fetch tasks");
         }
       } catch (error) {
         setError(error.message); // Set error state if the fetch fails
@@ -38,9 +38,10 @@ const TaskList = () => {
   }
 
   return (
-    <div>
-      <div className="container m-4 p-4">
+    <main className="bg-gray-900 text-white p-4 min-h-0 h-full">
+      <div className="flex flex-col max-w-4xl mx-auto h-full">
         <h1 className="text-3xl text-center mb-6">Task List</h1>
+
         <div className="flex justify-end mb-4">
           <Link href="/add-task">
             <button
@@ -52,7 +53,7 @@ const TaskList = () => {
           </Link>
         </div>
 
-        <div className="relative overflow-x-auto">
+        <div className="flex-1 relative overflow-x-auto overflow-y-auto">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -73,15 +74,18 @@ const TaskList = () => {
             <tbody>
               {tasks.length > 0 ? (
                 tasks.map((task) => (
-                  <tr key={task.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                  <tr
+                    key={task.id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                  >
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {task.judul} {/* Assuming task has a 'judul' field */}
+                      {task.judul}
                     </th>
-                    <td className="px-6 py-4">{task.deskripsi}</td> {/* Assuming task has a 'deskripsi' field */}
-                    <td className="px-6 py-4">{task.status}</td> {/* Assuming task has a 'status' field */}
+                    <td className="px-6 py-4">{task.deskripsi}</td>
+                    <td className="px-6 py-4">{task.status}</td>
                     <td>
                       <div className="px-6 py-4">
                         <Link href={`/edit-task/${task.id}`}>
@@ -92,9 +96,7 @@ const TaskList = () => {
                             Edit Task
                           </button>
                         </Link>
-
                         <DeleteTask id={task._id} />
-                        
                       </div>
                     </td>
                   </tr>
@@ -110,7 +112,7 @@ const TaskList = () => {
           </table>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
