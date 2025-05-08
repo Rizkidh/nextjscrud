@@ -4,37 +4,36 @@ import Link from "next/link";
 import DeleteTask from "./DeleteTask";
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState([]); // State to store tasks
-  const [loading, setLoading] = useState(true); // State to track loading
-  const [error, setError] = useState(null); // State to track error
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch tasks from the API when the component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/tasks"); // Adjust the URL if needed
+        const res = await fetch("/api/tasks"); // ✅ Relative URL, safe for deployment
         if (res.ok) {
           const data = await res.json();
-          setTasks(data); // Set the fetched tasks to state
+          setTasks(data);
         } else {
           throw new Error("Failed to fetch tasks");
         }
       } catch (error) {
-        setError(error.message); // Set error state if the fetch fails
+        setError(error.message);
       } finally {
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false);
       }
     };
 
     fetchTasks();
-  }, []); // Empty array ensures this effect runs only once when the component mounts
+  }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading text while data is being fetched
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Display error message if there's an issue fetching tasks
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -57,25 +56,17 @@ const TaskList = () => {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3">
-                  Task Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Task Detail
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
-                </th>
+                <th scope="col" className="px-6 py-3">Task Name</th>
+                <th scope="col" className="px-6 py-3">Task Detail</th>
+                <th scope="col" className="px-6 py-3">Status</th>
+                <th scope="col" className="px-6 py-3">Action</th>
               </tr>
             </thead>
             <tbody>
               {tasks.length > 0 ? (
                 tasks.map((task) => (
                   <tr
-                    key={task.id}
+                    key={task.id || task._id}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
                   >
                     <th
@@ -88,9 +79,9 @@ const TaskList = () => {
                     <td className="px-6 py-4">{task.status}</td>
                     <td>
                       <div className="px-6 py-4">
-                        <Link href={`/edit-task/${task.id}`}>
+                        <Link href={`/edit-task/${task.id || task._id}`}>
                           <button
-                            type="submit"
+                            type="button"
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                           >
                             Edit Task

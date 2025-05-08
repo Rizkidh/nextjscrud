@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { motion, AnimatePresence } from "framer-motion"; // 🔥 Animasi fade
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
@@ -67,26 +68,32 @@ const ChatBot = () => {
 
         {/* Chat Area */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4">
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${
-                msg.type === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
-                  msg.type === "user"
-                    ? "bg-blue-600 text-white rounded-br-none"
-                    : msg.text.startsWith("❌ Error")
-                    ? "bg-red-600 text-white font-mono rounded-bl-none"
-                    : "bg-gray-100 text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-white"
+          <AnimatePresence initial={false}>
+            {messages.map((msg, idx) => (
+              <motion.div
+                key={idx}
+                className={`flex ${
+                  msg.type === "user" ? "justify-end" : "justify-start"
                 }`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
               >
-                {msg.text}
-              </div>
-            </div>
-          ))}
+                <div
+                  className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
+                    msg.type === "user"
+                      ? "bg-blue-600 text-white rounded-br-none"
+                      : msg.text.startsWith("❌ Error")
+                      ? "bg-red-600 text-white font-mono rounded-bl-none"
+                      : "bg-gray-100 text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-white"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
           {loading && (
             <div className="flex justify-start">

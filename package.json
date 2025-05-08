@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "framer-motion": "^12.10.1",
     "mongodb": "^6.14.0",
     "mongoose": "^8.11.0",
     "next": "15.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "react-typing-effect": "^2.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

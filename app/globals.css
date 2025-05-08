@@ -22,3 +22,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.chat-container {
+  max-height: calc(100vh - 80px); /* Adjust based on navbar height */
+  overflow-y: auto;
+}
+
+.messages {
+  padding-bottom: 50px; /* Prevents chat from being hidden behind the input */
+}
