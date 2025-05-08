@@ -16,6 +16,7 @@ const ChatBot = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,27 +54,25 @@ const ChatBot = () => {
       ]);
     } finally {
       setLoading(false);
-      setInput("");
+      setInput("");  // Clear input field after submitting
     }
   };
 
   return (
-    <main className="fixed w-full h-[844px] bg-gray-900 text-white p-4 pt-20 pb-28 sm:h-[600px] md:h-[800px] lg:h-[900px]">
-      {/* Konten di sini */}
-      <div className="flex flex-col max-w-4xl mx-auto h-full">
+    <main className="fixed w-full h-full bg-gray-900 text-white p-4 pt-16 sm:pt-20 overflow-hidden pb-16">
+      {/* Chat container */}
+      <div className="flex flex-col h-full max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-gray-800 shadow p-4 text-center text-xl sm:text-2xl font-semibold">
           Gemini 1.5 ChatBot (Next.js)
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4">
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 flex flex-col-reverse">
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`flex ${
-                msg.type === "user" ? "justify-end" : "justify-start"
-              }`}
+              className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
@@ -103,7 +102,7 @@ const ChatBot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-800 p-3 sm:p-4 border-t border-gray-700 fixed bottom-0 left-0 w-full z-10">
+        <div className="bg-gray-800 p-3 sm:p-4 border-t border-gray-700 w-full">
           {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
           <form
             onSubmit={handleSubmit}
