@@ -26,10 +26,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen overflow-hidden flex flex-col bg-gray-900`}
       >
         <ToastContainer />
-        {/* Navbar yang sticky */}
-        <Navbar className="sticky top-0 left-0 right-0 z-50 bg-gray-800" />
+        {/* Navbar yang fixed */}
+        <Navbar className="fixed top-0 left-0 right-0 z-50 bg-gray-800" />
         {/* Konten utama dengan padding atas */}
-        <main className="flex-1 overflow-y-auto pt-16 pb-[80px]">
+        <main className="flex-1 overflow-hidden pt-5 pb-[80px]">
           {/* Konten di sini */}
           {children}
         </main>

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { motion, AnimatePresence } from "framer-motion";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
@@ -40,8 +39,10 @@ const ChatBot = () => {
       }
 
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
       const result = await model.generateContent(input);
-      const text = result.response.text();
+      const response = result.response;
+      const text = response.text();
 
       setMessages((prev) => [...prev, { type: "bot", text }]);
     } catch (err) {
@@ -57,49 +58,44 @@ const ChatBot = () => {
   };
 
   return (
-    <main className="bg-gray-900 text-white p-4 min-h-[100dvh] flex flex-col">
-      <div className="flex flex-col max-w-4xl mx-auto flex-1">
-
+    <main className="fixed w-full h-[844px] bg-gray-900 text-white p-4 pt-20 pb-28 sm:h-[600px] md:h-[800px] lg:h-[900px]">
+      {/* Konten di sini */}
+      <div className="flex flex-col max-w-4xl mx-auto h-full">
         {/* Header */}
         <div className="bg-gray-800 shadow p-4 text-center text-xl sm:text-2xl font-semibold">
           Gemini 1.5 ChatBot (Next.js)
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 md:pb-32">
-          <AnimatePresence initial={false}>
-            {messages.map((msg, idx) => (
-              <motion.div
-                key={idx}
-                className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`flex ${
+                msg.type === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
+                  msg.type === "user"
+                    ? "bg-blue-600 text-white rounded-br-none"
+                    : msg.text.startsWith("❌ Error")
+                    ? "bg-red-600 text-white font-mono rounded-bl-none"
+                    : "bg-gray-100 text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-white"
+                }`}
               >
-                <div
-                  className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md ${
-                    msg.type === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : msg.text.startsWith("❌ Error")
-                      ? "bg-red-600 text-white font-mono rounded-bl-none"
-                      : "bg-gray-100 text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-white"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                {msg.text}
+              </div>
+            </div>
+          ))}
 
-          {/* Loading Indicator */}
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg shadow animate-pulse">
+              <div className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg rounded-bl-none shadow animate-pulse">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" />
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-100" />
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-200" />
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-100"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-200"></div>
                 </div>
               </div>
             </div>
@@ -107,9 +103,12 @@ const ChatBot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-800 p-3 sm:p-4 border-t border-gray-700 md:fixed md:bottom-0 md:left-0 md:w-full">
+        <div className="bg-gray-800 p-3 sm:p-4 border-t border-gray-700 fixed bottom-0 left-0 w-full z-10">
           {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
-          <form onSubmit={handleSubmit} className="flex items-center gap-2 mx-auto max-w-3xl w-full">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center gap-2 mx-auto max-w-3xl w-full"
+          >
             <input
               type="text"
               value={input}
@@ -140,12 +139,12 @@ const ChatBot = () => {
                     r="10"
                     stroke="currentColor"
                     strokeWidth="4"
-                  />
+                  ></circle>
                   <path
                     className="opacity-75"
                     fill="currentColor"
                     d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  />
+                  ></path>
                 </svg>
               ) : (
                 "Send"
@@ -153,7 +152,6 @@ const ChatBot = () => {
             </button>
           </form>
         </div>
-
       </div>
     </main>
   );
