@@ -59,7 +59,7 @@ const ChatBot = () => {
   };
 
   return (
-    <main className="fixed w-full h-full bg-gray-900 text-white p-4 pt-16 sm:pt-20 overflow-hidden pb-16">
+    <main className="fixed w-full h-full bg-gray-900 text-white pt-16 sm:pt-20 overflow-hidden pb-10">
       {/* Chat container */}
       <div className="flex flex-col h-full max-w-4xl mx-auto">
         {/* Header */}
