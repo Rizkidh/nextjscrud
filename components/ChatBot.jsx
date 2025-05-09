@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import "animate.css";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
@@ -15,8 +16,13 @@ const ChatBot = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const bottomRef = useRef(null);
 
-  // Function to handle form submission
+  // Scroll to bottom on new message
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,7 +46,6 @@ const ChatBot = () => {
       }
 
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
       const result = await model.generateContent(input);
       const response = result.response;
       const text = response.text();
@@ -54,13 +59,12 @@ const ChatBot = () => {
       ]);
     } finally {
       setLoading(false);
-      setInput("");  // Clear input field after submitting
+      setInput("");
     }
   };
 
   return (
     <main className="fixed w-full h-full bg-gray-900 text-white pt-16 sm:pt-20 overflow-hidden pb-10">
-      {/* Chat container */}
       <div className="flex flex-col h-full max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-gray-800 shadow p-4 text-center text-xl sm:text-2xl font-semibold">
@@ -68,14 +72,14 @@ const ChatBot = () => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 flex flex-col-reverse">
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-4 flex flex-col">
           {messages.map((msg, idx) => (
             <div
               key={idx}
               className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
+                className={`animate__animated animate__fadeIn max-w-[85%] sm:max-w-[75%] md:max-w-[65%] px-4 py-2 rounded-lg text-sm sm:text-base break-words shadow-md transition-all duration-300 ${
                   msg.type === "user"
                     ? "bg-blue-600 text-white rounded-br-none"
                     : msg.text.startsWith("❌ Error")
@@ -99,6 +103,9 @@ const ChatBot = () => {
               </div>
             </div>
           )}
+
+          {/* Scroll anchor */}
+          <div ref={bottomRef}></div>
         </div>
 
         {/* Input Area */}
