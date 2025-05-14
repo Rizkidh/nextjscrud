@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import "animate.css";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+const telegramBotUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 
 let genAI;
 if (apiKey) {
@@ -18,7 +19,6 @@ const ChatBot = () => {
   const [error, setError] = useState(null);
   const bottomRef = useRef(null);
 
-  // Scroll to bottom on new message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -104,7 +104,6 @@ const ChatBot = () => {
             </div>
           )}
 
-          {/* Scroll anchor */}
           <div ref={bottomRef}></div>
         </div>
 
@@ -157,6 +156,21 @@ const ChatBot = () => {
               )}
             </button>
           </form>
+
+          {/* Telegram Bot Link */}
+          {telegramBotUsername && (
+            <p className="text-xs text-gray-400 text-center mt-3">
+              Chat with me on Telegram:{" "}
+              <a
+                href={`https://t.me/${telegramBotUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 underline"
+              >
+                @{telegramBotUsername}
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </main>
