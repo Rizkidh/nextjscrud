@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@tailwindcss/typography": "^0.5.16",
     "animate.css": "^4.1.1",
     "framer-motion": "^12.10.1",
     "mongodb": "^6.14.0",
@@ -18,6 +19,7 @@
     "openai": "^4.98.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
     "react-toastify": "^11.0.5",
     "react-typing-effect": "^2.0.5"
   },

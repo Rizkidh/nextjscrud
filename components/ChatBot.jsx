@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import "animate.css";
+import ReactMarkdown from "react-markdown";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const telegramBotUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
@@ -87,7 +88,33 @@ const ChatBot = () => {
                     : "bg-gray-100 text-gray-900 rounded-bl-none dark:bg-gray-700 dark:text-white"
                 }`}
               >
-                {msg.text}
+                {msg.type === "bot" && !msg.text.startsWith("❌ Error") ? (
+                  <div className="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none">
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ node, ...props }) => <h1 className="text-2xl font-bold mt-4 mb-2" {...props} />,
+                        h2: ({ node, ...props }) => <h2 className="text-xl font-semibold mt-4 mb-2" {...props} />,
+                        h3: ({ node, ...props }) => <h3 className="text-lg font-medium mt-3 mb-1" {...props} />,
+                        p: ({ node, ...props }) => <p className="mb-2 leading-relaxed" {...props} />,
+                        li: ({ node, ...props }) => <li className="list-disc list-inside" {...props} />,
+                        code: ({ node, inline, className, children, ...props }) =>
+                          inline ? (
+                            <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded" {...props}>
+                              {children}
+                            </code>
+                          ) : (
+                            <pre className="bg-gray-100 dark:bg-gray-800 text-sm p-2 rounded overflow-x-auto">
+                              <code {...props}>{children}</code>
+                            </pre>
+                          ),
+                      }}
+                    >
+                      {msg.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  msg.text
+                )}
               </div>
             </div>
           ))}
